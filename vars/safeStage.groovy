@@ -6,6 +6,8 @@ def call(String name, Closure body) {
     } catch (err) {
         log.error("${name} failed: ${err.getMessage()}")
         currentBuild.result = 'FAILURE'
+        env.FAILED_STAGE = name
+        env.FAILURE_REASON = err.getMessage()
         error("Aborting: ${name} - ${err.getMessage()}") 
     }
 }
