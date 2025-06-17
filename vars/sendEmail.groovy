@@ -9,15 +9,13 @@ def call(Map config = [:]) {
     def color = isSuccess ? "green" : "red"
     def icon = isSuccess ? "✅" : "❌"
     def logExcerpt = isSuccess ? "" :
-        "<pre style='font-size:13px;background:#f9f9f9;border:1px solid #ccc;padding:10px;'>" +
-        currentBuild.rawBuild.getLog(100).join("<br/>") +
-        "</pre>"
+        (currentBuild?.rawBuild?.getLog(100)?.join("<br/>") ?: "No logs available")
 
     def body = """
         <h2 style='color:${color};'>Build ${status}</h2>
         <b>Job:</b> ${env.JOB_NAME} <br/>
         <b>Build Number:</b> #${env.BUILD_NUMBER} <br/>
-        <b>Duration:</b> ${currentBuild.durationString} <br/>
+        <b>Duration:</b> ${currentBuild.durationString ?: 'N/A'} <br/>
         <b>URL:</b> <a href='${env.BUILD_URL}'>${env.BUILD_URL}</a><br/>
         ${logExcerpt}
     """
@@ -28,4 +26,3 @@ def call(Map config = [:]) {
          mimeType: 'text/html',
          attachmentsPattern: '**/*.html'
 }
-
