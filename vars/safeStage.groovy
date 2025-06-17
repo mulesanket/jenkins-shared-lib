@@ -1,5 +1,3 @@
-//Error Handling at every stage
-
 def call(String name, Closure body) {
     try {
         log.info("${name} started")
@@ -8,6 +6,6 @@ def call(String name, Closure body) {
     } catch (err) {
         log.error("${name} failed: ${err.getMessage()}")
         currentBuild.result = 'FAILURE'
-        throw err
+        error("Aborting: ${name} - ${err.getMessage()}") 
     }
 }
